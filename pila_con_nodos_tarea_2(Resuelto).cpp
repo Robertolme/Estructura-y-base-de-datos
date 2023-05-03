@@ -83,8 +83,10 @@ int Pila::cima(){
 
 int Pila::pop(){
 	int r = cima();
+	Nodo* c = this->tope;
 	if(pilaVacia()){
 		this->tope = this->tope->dameTuSiguiente();
+		delete c;
 		return r;
 	}	
 	else{

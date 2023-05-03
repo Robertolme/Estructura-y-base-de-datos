@@ -69,7 +69,7 @@ class Pila
 };
 
 Pila::Pila(){
-	this->tope = new Nodo(NULL,NULL);
+	this->tope = new Nodo(0);
 }
 
 
@@ -87,10 +87,10 @@ int Pila::pop(){
 		this->tope = this->tope->dameTuSiguiente();
 		return r;
 	}	
-	else
+	else{
 		cout<<"La lista esta vacia"<<endl;
-		return NULL;
-	
+		exit(-1);
+	}
 	 
 }
 

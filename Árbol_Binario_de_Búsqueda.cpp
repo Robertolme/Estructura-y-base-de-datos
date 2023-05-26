@@ -40,7 +40,7 @@ class ArbolBB
 	    Nodo* root;
 	    void acomodarABB(Nodo* nodo, int dato);
 	    bool buscaABB(Nodo* nodo, int dato);
-	    void borrarABB(Nodo* nodo, int dato);
+	    void borrarABB(Nodo** nodo, int dato);
 	    Nodo* buscaMin(Nodo* nodo);
 
 };
@@ -121,36 +121,34 @@ Nodo* ArbolBB::buscaMin(Nodo* nodo) {
 
 void ArbolBB::borrarDato(int dato) {
 	cout << "Se borró el " << dato << endl;
-    borrarABB(root, dato);
+    borrarABB(&root, dato);
 }
 
-void ArbolBB::borrarABB(Nodo* nodo, int dato) {
-    if (nodo == NULL)
+void ArbolBB::borrarABB(Nodo** nodo, int dato) {
+    if (*nodo == NULL)
         return;
-    if (dato < nodo->dato) {
-        borrarABB(nodo->izq, dato);
-    } else if (dato > nodo->dato) {
-        borrarABB(nodo->der, dato);
+    if (dato < (*nodo)->dato) {
+        borrarABB(&((*nodo)->izq), dato);
+    } else if (dato > (*nodo)->dato) {
+        borrarABB(&((*nodo)->der), dato);
     } else {
-        if (nodo->izq == NULL && nodo->der == NULL) {
+        if ((*nodo)->izq == NULL && (*nodo)->der == NULL) {
             // Caso 1: Nodo sin hijos
-            delete nodo;
-            nodo = NULL;
-        } else if (nodo->izq != NULL && nodo->der == NULL) {
+            delete (*nodo);
+            *nodo = NULL;
+        } else if ((*nodo)->izq != NULL && (*nodo)->der == NULL) {
             // Caso 2: Nodo con un hijo izquierdo
-            Nodo* temp = nodo;
-            nodo = nodo->izq;
-            delete temp;
-        } else if (nodo->izq == NULL && nodo->der != NULL) {
+            *nodo = (*nodo)->izq;
+            delete (*nodo);
+        } else if ((*nodo)->izq == NULL && (*nodo)->der != NULL) {
             // Caso 3: Nodo con un hijo derecho
-            Nodo* temp = nodo;
-            nodo = nodo->der;
-            delete temp;
+            *nodo = (*nodo)->der;
+            delete (*nodo);
         } else {
             // Caso 4: Nodo con dos hijos
-            Nodo* minNodo = buscaMin(nodo->der);
-            nodo->dato = minNodo->dato;
-            borrarABB(nodo->der, minNodo->dato);
+            Nodo* minNodo = buscaMin((*nodo)->der);
+            (*nodo)->dato = minNodo->dato;
+            borrarABB(&((*nodo)->der), minNodo->dato);
         }
     }
 }
